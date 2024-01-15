@@ -28,7 +28,7 @@ var connect = async () => {
   }
 };
 mongoose.connection.on("disconnected", () => {
-  console.log("DB disconnected");
+  console.log("DB disconnec ted");
 });
 
 app.use(helmet({

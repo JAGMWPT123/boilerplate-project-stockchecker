@@ -9,7 +9,7 @@ module.exports = function (app) {
       let likes  = req.query.likes ;
       
       // console.log(price)
-      // console.log(likes)
+      // conso le.log(likes)
       let stockData = {
         
         stock :  String, 
