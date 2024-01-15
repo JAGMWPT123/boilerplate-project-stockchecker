@@ -4,6 +4,7 @@ const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
 const helmet = require("helmet");
+const mongoose = require('mongoose');
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -18,6 +19,17 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var connect = async () => {
+  try {
+    await mongoose.connect(process.env.DB);
+    console.log(">> mangodb is now alive!!!");
+  } catch (error) {
+    throw error;
+  }
+};
+mongoose.connection.on("disconnected", () => {
+  console.log("DB disconnected");
+});
 
 app.use(helmet({
     contentSecurityPolicy: {    // enable and configure
@@ -51,6 +63,7 @@ app.use(function(req, res, next) {
 //Start our server and tests!
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
+  
   if(process.env.NODE_ENV==='test') {
     console.log('Running Tests...');
     setTimeout(function () {
@@ -62,6 +75,7 @@ const listener = app.listen(process.env.PORT || 3000, function () {
       }
     }, 3500);
   }
+  connect();
 });
 
 module.exports = app; //for testing
