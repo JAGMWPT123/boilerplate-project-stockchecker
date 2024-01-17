@@ -61,44 +61,67 @@ module.exports = function (app) {
         // console.log(stockData)
         res.send({"stockData" :stockData})
       })
-      }else{
-
-        // console.log("YEAH")
-
-        const requests = axios.get(urls[0]);
-        requests.then((resp)=>{
-          // console.log(res.data);
-          stockData1.stock = resp.data.symbol
-          stockData1.price = resp.data.latestPrice
-          if (likes === 'true') {
-            stockData1.rel_likes = 1
-          }else{
-            stockData1.rel_likes = 0
-          }
-
-          s = new stockDa(stockData1.stock,stockData1.price,stockData1.rel_likes)
-          // s = JSON.stringify(s)
-          m.push(s)
-          const requests1 = axios.get(urls[1]);
-          requests1.then((resp1)=>{
-          stockData1.stock = resp1.data.symbol
-          stockData1.price = resp1.data.latestPrice
-          if (likes === 'true') {
-            stockData1.rel_likes = 1
-          }else{
-            stockData1.rel_likes = 0
-          }
-          s = new stockDa(stockData1.stock,stockData1.price,stockData1.rel_likes)
-          // s = JSON.stringify(s)  
-          m.push(s)
-        
-          // console.log(m)
+      
+      }else {
+        const requests = urls.map((url) => axios.get(url));
+        /*
+        | For waiting the Promise is fulfilled
+        | with the Response, use the then() method.
+        | If the HTTP request received errors
+        | use catch() method
+        */
+        axios.all(requests).then((responses) => {
+          responses.forEach((resp) => {
+            stockData1.stock = resp.data.symbol
+            stockData1.price = resp.data.latestPrice
+            if (likes === 'true') {
+              stockData1.rel_likes = 1
+            }else{
+              stockData1.rel_likes = 0
+            }
+            s = new stockDa(stockData1.stock,stockData1.price,stockData1.rel_likes)
+            m.push(s)
+            // console.info(resp.config.url);
+            // console.table(m);
+          })
           res.send({"stockData" : m})
-        })
-        })
-      }
-
-    });
+            });
+    }
     
-    
+  })
 };
+// }else if(stock){
+
+      //   // console.log("YEAH")
+
+      //   const requests = axios.get(urls[0]);
+      //   requests.then((resp)=>{
+      //     // console.log(res.data);
+      //     stockData1.stock = resp.data.symbol
+      //     stockData1.price = resp.data.latestPrice
+      //     if (likes === 'true') {
+      //       stockData1.rel_likes = 1
+      //     }else{
+      //       stockData1.rel_likes = 0
+      //     }
+
+      //     s = new stockDa(stockData1.stock,stockData1.price,stockData1.rel_likes)
+      //     // s = JSON.stringify(s)
+      //     m.push(s)
+      //     const requests1 = axios.get(urls[1]);
+      //     requests1.then((resp1)=>{
+      //     stockData1.stock = resp1.data.symbol
+      //     stockData1.price = resp1.data.latestPrice
+      //     if (likes === 'true') {
+      //       stockData1.rel_likes = 1
+      //     }else{
+      //       stockData1.rel_likes = 0
+      //     }
+      //     s = new stockDa(stockData1.stock,stockData1.price,stockData1.rel_likes)
+      //     // s = JSON.stringify(s)  
+      //     m.push(s)
+        
+      //     // console.log(s)
+      //     res.send({"stockData" : m})
+      //   })
+      //   })

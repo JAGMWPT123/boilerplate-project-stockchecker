@@ -19,18 +19,18 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var connect = async () => {
-  try {
-    await mongoose.connect(process.env.DB);
-    console.log(">> mangodb is now alive!!!");
-    //console.log(">> Running Tests...");
-  } catch (error) {
-    throw error;
-  }
-};
-mongoose.connection.on("disconnected", () => {
-  console.log("DB disconnec ted");
-});
+// var connect = async () => {
+//   try {
+//     await mongoose.connect(process.env.DB);
+//     console.log(">> mangodb is now alive!!!");
+//     //console.log(">> Running Tests...");
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+// mongoose.connection.on("disconnected", () => {
+//   console.log("DB disconnec ted");
+// });
 app.use(helmet({
     contentSecurityPolicy: {    // enable and configure
       directives: {
