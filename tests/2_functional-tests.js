@@ -15,20 +15,20 @@ suite('Functional Tests', function() {
         .then((res) => {
                 res = res.body.stockData
                 //    console.log(res)
-                chai.assert.include(res , expc.stockData )
+                chai.assert.deepEqual(res , expc.stockData )
                 done()
             }).catch (error=> {
                 done(error)
                 // console.log(error)
             } )
-           });
+           }); 
            it('Viewing one stock and liking it', (done)=>{
                let expc = {"stockData":{"stock":"GOOG","price":144.08,"likes":1}}
                chai.request(server).get('/api/stock-prices?stock=GOOG&like=true')
                .then((res) => {
                    res = res.body.stockData
                    //    console.log(res)
-                   chai.assert.include(res , expc.stockData )
+                   chai.assert.deepEqual(res , expc.stockData )
                    done()
                 }).catch (error=> {
                     done(error)
@@ -42,7 +42,7 @@ suite('Functional Tests', function() {
                .then((res) => {
                    res = res.body.stockData
                    //    console.log(res)
-                   chai.assert.include(res , expc.stockData )
+                   chai.assert.deepEqual(res , expc.stockData )
                    done()
                 }).catch (error=> {
                     done(error)
